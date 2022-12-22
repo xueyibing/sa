@@ -40,6 +40,7 @@ def counter(request, _):
 
 
 def getUserinfo(request, _):
+    logger.info('req: {}'.format(request.body))
     postbody = request.body
     json_param = json.loads(postbody.decode())
     if json_param:
@@ -51,7 +52,8 @@ def getUserinfo(request, _):
         logger.info(r)
         return r
     else:
-            return requests.HTTPError('param error!')
+        logger.info('ddddddddddd')
+        return
 
 
 def get_count():
