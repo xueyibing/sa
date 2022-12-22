@@ -40,19 +40,18 @@ def counter(request, _):
 
 
 def getUserinfo(request, _):
-
-    rsp = JsonResponse({'code': 0, 'errorMsg': ''}, json_dumps_params={'ensure_ascii': False})
-
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-    code = body['code']
-    url = 'https://api.weixin.qq.com/wxa/business/getuserphonenumber'
-    s = json.dumps({'code': code})
-    logger.info(s)
-    r = requests.post(url, data=s)
-    logger.info(r)
-
-    return rsp
+    postbody = request.body
+    json_param = json.loads(postbody.decode())
+    if json_param:
+        code = json_param.get('code',0)
+        url = 'https://api.weixin.qq.com/wxa/business/getuserphonenumber'
+        s = json.dumps({'code': code})
+        logger.info(s)
+        r = requests.post(url, data=s)
+        logger.info(r)
+        return r
+    else:
+            return requests.HTTPError('param error!')
 
 
 def get_count():
