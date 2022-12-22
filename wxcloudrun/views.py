@@ -1,5 +1,6 @@
 import json
 import logging
+import requests
 
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -35,6 +36,22 @@ def counter(request, _):
         rsp = JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
                             json_dumps_params={'ensure_ascii': False})
     logger.info('response result: {}'.format(rsp.content.decode('utf-8')))
+    return rsp
+
+
+def getUserinfo(request, _):
+
+    rsp = JsonResponse({'code': 0, 'errorMsg': ''}, json_dumps_params={'ensure_ascii': False})
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    code = body['code']
+    url = 'https://api.weixin.qq.com/wxa/business/getuserphonenumber'
+    s = json.dumps({'code': code})
+    logger.info(s)
+    r = requests.post(url, data=s)
+    logger.info(r)
+
     return rsp
 
 
