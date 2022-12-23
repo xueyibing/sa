@@ -40,8 +40,8 @@ def counter(request, _):
 
 
 def getUserinfo(request, _):
-    logger.info('req: {}'.format(request.body))
-    postbody = request.body
+    logger.info('req: {}'.format(request.data))
+    postbody = request.data
     json_param = json.loads(postbody.decode())
     if json_param:
         code = json_param.get('code',0)
